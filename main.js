@@ -67,7 +67,7 @@ earth.position.set(15, 15, 15);
 scene.add(earth);
 
 // Add these variables before the animate function
-let earthOrbitRadius = 120; // Distance from sun to earth
+let earthOrbitRadius = 110; // Distance from sun to earth
 let earthOrbitSpeed = 0.005; // Speed of earth's orbit
 let earthOrbitAngle = 0; // Current angle of earth's orbit
 
