@@ -8,6 +8,7 @@ import { createSun } from "./solarSystem/sun.js";
 import { createStars } from "./stars.js";
 import { createEarth, moon } from "./solarSystem/earth.js";
 import { createMercury } from "./solarSystem/mercury.js";
+import { createVenus } from "./solarSystem/venus.js";
 
 //----------------------------------------------
 // SCENE & CAMERA SETUP
@@ -49,8 +50,8 @@ scene.add(ambientLight);
 // Add light helper for debugging
 // const helper = new THREE.DirectionalLightHelper(directionalLight, 15);
 // scene.add(helper);
-const helper2 = new THREE.PointLightHelper(sunLight, 15);
-scene.add(helper2);
+// const helper2 = new THREE.PointLightHelper(sunLight, 15);
+// scene.add(helper2);
 
 //----------------------------------------------
 // CONTROLS
@@ -64,6 +65,12 @@ controls.maxDistance = 500; // Allow zooming out to see the entire system
 const earth = createEarth();
 earth.position.set(15, 15, 15);
 scene.add(earth);
+
+// Add these variables before the animate function
+let earthOrbitRadius = 120; // Distance from sun to earth
+let earthOrbitSpeed = 0.005; // Speed of earth's orbit
+let earthOrbitAngle = 0; // Current angle of earth's orbit
+
 //----------------------------------------------
 // Moon SETUP
 //----------------------------------------------
@@ -71,6 +78,11 @@ const moonObj = moon();
 // Start the moon at some position relative to Earth
 moonObj.position.set(earth.position.x + 10, earth.position.y, earth.position.z);
 scene.add(moonObj);
+
+// Moon orbit parameters
+let moonOrbitRadius = 15; // Distance from earth to moon
+let moonOrbitSpeed = 0.021; // Speed of moon's orbit (faster than Earth)
+let moonOrbitAngle = 0; // Current angle of moon's orbit
 
 //----------------------------------------------
 // Mercury SETUP
@@ -83,6 +95,18 @@ scene.add(mercury);
 let mercuryOrbitRadius = 30; // Closer to the sun than Earth
 let mercuryOrbitSpeed = 0.02; // Faster orbit than Earth
 let mercuryOrbitAngle = 0; // Current angle of Mercury's orbit
+
+//----------------------------------------------
+// Venus SETUP
+//----------------------------------------------
+const venus = createVenus();
+venus.position.set(-10, 15, 15); // Initial position, will be overridden by orbitvenus
+scene.add(venus);
+
+// Add these variables with your other orbit parameters
+let venusOrbitRadius = 45; // Closer to the sun than Earth
+let venusOrbitSpeed = 0.015; // Faster orbit than Earth
+let venusOrbitAngle = 0; // Current angle of Mercury's orbit
 
 //----------------------------------------------
 // Sun SETUP
@@ -100,16 +124,6 @@ createStars(scene, 4000);
 //----------------------------------------------
 // ANIMATION LOOP
 //----------------------------------------------
-
-// Add these variables before the animate function
-let earthOrbitRadius = 70; // Distance from sun to earth
-let earthOrbitSpeed = 0.005; // Speed of earth's orbit
-let earthOrbitAngle = 0; // Current angle of earth's orbit
-
-// Moon orbit parameters
-let moonOrbitRadius = 15; // Distance from earth to moon
-let moonOrbitSpeed = 0.021; // Speed of moon's orbit (faster than Earth)
-let moonOrbitAngle = 0; // Current angle of moon's orbit
 
 function animate() {
   requestAnimationFrame(animate);
@@ -130,10 +144,17 @@ function animate() {
   moonObj.position.x = earth.position.x + moonOrbitRadius * Math.cos(moonOrbitAngle);
   moonObj.position.z = earth.position.z + moonOrbitRadius * Math.sin(moonOrbitAngle);
 
+  // Mercury orbit around the sun
   mercury.rotation.y += 0.005;
   mercuryOrbitAngle += mercuryOrbitSpeed;
   mercury.position.x = sun.position.x + mercuryOrbitRadius * Math.cos(mercuryOrbitAngle);
   mercury.position.z = sun.position.z + mercuryOrbitRadius * Math.sin(mercuryOrbitAngle);
+
+  // Venus orbit around the sun
+  venus.rotation.y += 0.005;
+  venusOrbitAngle += venusOrbitSpeed;
+  venus.position.x = sun.position.x + venusOrbitRadius * Math.cos(venusOrbitAngle);
+  venus.position.z = sun.position.z + venusOrbitRadius * Math.sin(venusOrbitAngle);
 
   renderer.render(scene, camera);
 }
