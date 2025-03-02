@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 export function createSun() {
-  const geometry = new THREE.SphereGeometry(70, 64, 32);
+  const geometry = new THREE.SphereGeometry(12, 64, 32);
   const material = new THREE.MeshStandardMaterial({
     color: 0xffff00,
     emissive: 0xffff00,
